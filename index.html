@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>口算题生成器</title>
+    <style>
+        body{font-family:Arial; max-width:900px; margin:0 auto; padding:20px}
+        .columns{display:flex; flex-wrap:wrap}
+        .column{width:18%; margin:0 1%}
+        button{background:#4CAF50; color:white; border:none; padding:10px; margin:10px 0}
+    </style>
+</head>
+<body>
+    <h2>100以内加减法</h2>
+    <button onclick="generate()">生成新题目</button>
+    <div class="columns" id="sheet"></div>
+
+    <script>
+        function generate(){
+            let html = Array(5).fill('<div class="column">');
+            // 生成80道基础题
+            for(let i=0;i<80;i++){
+                const col = i%4; // 前4列
+                const a = rand(col<2?1:10,99), b = rand(1,9);
+                html[col] += `<div>${a} ${randOp()} ${b} =</div>`;
+            }
+            // 第5列20道混合题
+            for(let i=0;i<20;i++){
+                const a = rand(10,99), b = rand(1,9), c = rand(1,9);
+                html[4] += `<div>${a} ${randOp()} ${b} ${randOp()} ${c} =</div>`;
+            }
+            document.getElementById('sheet').innerHTML = html.map(col=>col+'</div>').join('');
+        }
+        function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+        function randOp(){return Math.random()>0.5?'+':'-'}
+        // 首次加载自动生成
+        generate();
+    </script>
+</body>
+</html>
